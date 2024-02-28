@@ -1,0 +1,38 @@
+@model string
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Bem-vindo! Insira seu nome</h5>
+
+                    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+
+                    @using (Html.BeginForm())
+                    {
+                        <div class="form-group mb-2">
+                            <label for="name">Seu Nome</label>
+                            <input type="text" name="name" class="form-control" required />
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <label for="nameColor">Cor do Nome</label>
+                            <input type="color" id="nameColor" name="nameColor" value="#000000" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
