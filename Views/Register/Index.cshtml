@@ -1,0 +1,60 @@
+@model mvc.Dtos.CreateUserDto
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<head>
+    <link href="./Index.cshtml.css" rel="stylesheet" />
+</head>
+
+<div class="register-container">
+    <h2 class="mb-3">Registrar-se</h2>
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @using (Html.BeginForm("Index", "Register", FormMethod.Post, new { @class = "register-form" }))
+    {
+        <div class="form-group">
+            @Html.EditorFor(model => model.UserName, new
+                {
+                    htmlAttributes = new
+                    {
+                        @class = "form-control mb-3",
+                        @placeHolder = "Nome de usuário"
+                    }
+                })
+        </div>
+
+        <div class="form-group">
+            @Html.EditorFor(model => model.Password, new
+                {
+                    htmlAttributes = new
+                    {
+                        @class = "form-control mb-3",
+                        type = "password",
+                        @placeHolder = "Senha"
+                    }
+                })
+        </div>
+
+        <div class="form-group">
+            @Html.EditorFor(model => model.ConfirmPassword, new
+                {
+                    htmlAttributes = new
+                    {
+                        @class = "form-control mb-3",
+                        type = "password",
+                        @placeHolder = "Confirme a senha"
+                    }
+                })
+        </div>
+
+        <button type="submit" class="register-button">Registrar</button>
+    }
+</div>
