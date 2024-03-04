@@ -13,10 +13,12 @@ namespace mvc.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        private readonly IPasswordHashService _passwordHashService;
 
-        public UserService(IUserRepository repository)
+        public UserService(IUserRepository repository, IPasswordHashService passwordHashService)
         {
             _repository = repository;
+            _passwordHashService = passwordHashService;
         }
 
         public List<UserModel> GetAll()
@@ -41,7 +43,7 @@ namespace mvc.Services
             UserModel userModel = new()
             {
                 UserName = createUserDto.UserName,
-                Password = createUserDto.Password
+                Password = _passwordHashService.HashPassword(createUserDto.Password)
             };
 
             return _repository.Create(userModel);
@@ -54,7 +56,7 @@ namespace mvc.Services
             UserModel userById = GetById(id);
 
             if (updateUserDto.UserName != null) userById.UserName = updateUserDto.UserName;
-            if (updateUserDto.Password != null) userById.Password = updateUserDto.Password;
+            if (updateUserDto.Password != null) userById.Password = _passwordHashService.HashPassword(updateUserDto.Password);
             if (updateUserDto.Avatar != null) userById.Avatar = updateUserDto.Avatar;
 
             return _repository.Update(userById);

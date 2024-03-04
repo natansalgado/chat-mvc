@@ -1,14 +1,16 @@
-@model string
 @{
     ViewBag.Title = "Chat";
 }
 
 <div id="chat-container">
+    <div>
+        <a asp-action="Logout" asp-controller="Chat" class="btn btn-danger">Deslogar</a>
+    </div>
+
     <div id="chat-messages">
         <div id="chatArea" class="chat-area"></div>
     </div>
-    <input type="hidden" id="namecolor" value="@ViewBag.NameColor">
-    <input type="hidden" id="username" value="@ViewBag.UserName">
+
     <div id="inputs">
         <input type="text" id="message-input" placeholder="Digite sua mensagem..." />
         <button id="send-button">Enviar</button>

@@ -1,14 +1,10 @@
 @model mvc.Dtos.CreateUserDto
 
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Registrar-se";
 }
 
-<head>
-    <link href="./Index.cshtml.css" rel="stylesheet" />
-</head>
-
-<div class="register-container">
+<div class="form-container">
     <h2 class="mb-3">Registre-se</h2>
 
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
@@ -18,7 +14,7 @@
         </div>
     }
 
-    <form asp-action="Index" asp-controller="Register" method="post" class="register-form">
+    <form asp-action="Index" asp-controller="Register" method="post">
         <div class="form-group">
             <input asp-for="@Model.UserName" class="form-control mb-3" placeholder="Nome de usuário" required>
         </div>
@@ -32,7 +28,7 @@
                 type="password" required>
         </div>
 
-        <button type="submit" class="register-button">Registrar</button>
+        <button type="submit" class="form-button">Registrar</button>
     </form>
 
     <p class="mt-3">

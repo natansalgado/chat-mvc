@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using mvc.Dtos;
 using mvc.Exceptions;
+using mvc.Models;
 using mvc.Services.Interfaces;
 
 namespace mvc.Controllers
@@ -12,14 +13,23 @@ namespace mvc.Controllers
     public class RegisterController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
-        public RegisterController(IUserService userService)
+        public RegisterController(IUserService userService, ITokenService tokenService)
         {
             _userService = userService;
+            _tokenService = tokenService;
         }
 
         public ActionResult Index()
         {
+            string userToken = HttpContext.Session.GetString("UserToken");
+
+            if (!string.IsNullOrEmpty(userToken))
+            {
+                return RedirectToAction("Index", "Chat");
+            }
+
             return View();
         }
 
@@ -34,7 +44,12 @@ namespace mvc.Controllers
 
             try
             {
-                _userService.Create(createUserDto);
+                UserModel user = _userService.Create(createUserDto);
+
+                string token = _tokenService.GenerateToken(user);
+
+                HttpContext.Session.SetString("UserToken", token);
+
                 return RedirectToAction("Index", "Chat");
             }
             catch (ChatException ex)

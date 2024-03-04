@@ -3,41 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using mvc.Dtos;
+using mvc.Models;
+using mvc.Services;
+using mvc.Services.Interfaces;
 
 namespace mvc.Controllers
 {
     public class LoginController : Controller
     {
-        private static readonly List<string> _loggedUsers = new();
+        private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
+        private readonly IPasswordHashService _passwordHashService;
+
+        public LoginController(IUserService userService, ITokenService tokenService, IPasswordHashService passwordHashService)
+        {
+            _userService = userService;
+            _tokenService = tokenService;
+            _passwordHashService = passwordHashService;
+        }
 
         public ActionResult Index()
         {
+            string userToken = HttpContext.Session.GetString("UserToken");
+
+            if (!string.IsNullOrEmpty(userToken))
+            {
+                return RedirectToAction("Index", "Chat");
+            }
+
             return View();
         }
 
         [HttpPost]
-        public ActionResult Index(string name, string nameColor)
+        public ActionResult Index(LoginDto loginDto)
         {
-            Console.WriteLine(name);
+            UserModel user = _userService.GetByUserName(loginDto.UserName);
 
-            if (_loggedUsers.Any(x => x == name))
+            if (user == null || !_passwordHashService.VerifyPassword(loginDto.Password, user.Password))
             {
-                ViewBag.ErrorMessage = "Esse nome já está em uso, tente outro.";
+                ViewBag.ErrorMessage = "Usuário e senha não correspondem";
                 return View();
             }
 
-            if (!string.IsNullOrEmpty(name))
-            {
-                HttpContext.Session.SetString("UserName", name);
-                HttpContext.Session.SetString("NameColor", nameColor);
+            string token = _tokenService.GenerateToken(user);
 
-                _loggedUsers.Add(name);
+            HttpContext.Session.SetString("UserToken", token);
 
-                return RedirectToAction("Index", "Chat");
-            }
 
-            ViewBag.ErrorMessage = "Insira um nome válido.";
-            return View();
+
+            return RedirectToAction("Index", "Chat");
         }
     }
 }

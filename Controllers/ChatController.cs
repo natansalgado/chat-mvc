@@ -10,16 +10,21 @@ namespace mvc.Controllers
     {
         public ActionResult Index()
         {
-            string name = HttpContext.Session.GetString("UserName");
+            string userToken = HttpContext.Session.GetString("UserToken");
 
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(userToken))
             {
                 return RedirectToAction("Index", "Login");
             }
 
-            ViewBag.UserName = name;
-            ViewBag.NameColor = HttpContext.Session.GetString("NameColor");
             return View();
+        }
+
+        public ActionResult Logout()
+        {
+            HttpContext.Session.SetString("UserToken", "");
+
+            return RedirectToAction("");
         }
     }
 }

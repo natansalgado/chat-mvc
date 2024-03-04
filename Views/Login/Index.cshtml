@@ -1,38 +1,32 @@
-@model string
+@model mvc.Dtos.LoginDto
 @{
     ViewBag.Title = "Login";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Bem-vindo! Insira seu nome</h5>
+<div class="form-container">
+    <h2 class="mb-3">Fazer login</h2>
 
-                    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-                    {
-                        <div class="alert alert-danger" role="alert">
-                            @ViewBag.ErrorMessage
-                        </div>
-                    }
-
-                    @using (Html.BeginForm())
-                    {
-                        <div class="form-group mb-2">
-                            <label for="name">Seu Nome</label>
-                            <input type="text" name="name" class="form-control" required />
-                        </div>
-
-                        <div class="form-group mb-2">
-                            <label for="nameColor">Cor do Nome</label>
-                            <input type="color" id="nameColor" name="nameColor" value="#000000" />
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
-                    }
-                </div>
-            </div>
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ErrorMessage
         </div>
-    </div>
+    }
+
+    <form asp-action="Index" asp-controller="Login" method="post">
+        <div class="form-group">
+            <input asp-for="@Model.UserName" class="form-control mb-3" placeholder="Nome de usuário" required>
+        </div>
+
+        <div class="form-group">
+            <input asp-for="@Model.Password" class="form-control mb-3" placeholder="Senha" type="password" required>
+        </div>
+
+        <button type="submit" class="form-button">Entrar</button>
+    </form>
+
+    <p class="mt-3">
+        Ainda não possui uma conta?
+        <a asp-action="Index" asp-controller="Register" class="btn-link">Se registre aqui!</a>
+    </p>
 </div>

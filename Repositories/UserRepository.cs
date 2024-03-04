@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using mvc.Context;
+using mvc.Dtos;
 using mvc.Models;
 using mvc.Repositories.Interfaces;
 
@@ -30,6 +31,11 @@ namespace mvc.Repositories
         public UserModel GetByUserName(string userName)
         {
             return _context.Users.FirstOrDefault(x => x.UserName == userName);
+        }
+
+        public UserModel GetByLogin(LoginDto loginDto)
+        {
+            return _context.Users.FirstOrDefault(x => x.UserName == loginDto.UserName && x.Password == loginDto.Password);
         }
 
         public UserModel Create(UserModel userModel)
