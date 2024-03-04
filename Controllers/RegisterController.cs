@@ -35,7 +35,7 @@ namespace mvc.Controllers
             try
             {
                 _userService.Create(createUserDto);
-                return View("Created");
+                return RedirectToAction("Index", "Chat");
             }
             catch (ChatException ex)
             {
@@ -47,11 +47,6 @@ namespace mvc.Controllers
                 ViewBag.ErrorMessage = "Erro ao tentar acessar o servidor, tente novamente mais tarde.";
                 return View();
             }
-        }
-
-        public ActionResult Created()
-        {
-            return View();
         }
     }
 }

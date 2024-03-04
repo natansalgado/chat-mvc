@@ -9,7 +9,7 @@
 </head>
 
 <div class="register-container">
-    <h2 class="mb-3">Registrar-se</h2>
+    <h2 class="mb-3">Registre-se</h2>
 
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {
@@ -18,43 +18,25 @@
         </div>
     }
 
-    @using (Html.BeginForm("Index", "Register", FormMethod.Post, new { @class = "register-form" }))
-    {
+    <form asp-action="Index" asp-controller="Register" method="post" class="register-form">
         <div class="form-group">
-            @Html.EditorFor(model => model.UserName, new
-                {
-                    htmlAttributes = new
-                    {
-                        @class = "form-control mb-3",
-                        @placeHolder = "Nome de usuário"
-                    }
-                })
+            <input asp-for="@Model.UserName" class="form-control mb-3" placeholder="Nome de usuário" required>
         </div>
 
         <div class="form-group">
-            @Html.EditorFor(model => model.Password, new
-                {
-                    htmlAttributes = new
-                    {
-                        @class = "form-control mb-3",
-                        type = "password",
-                        @placeHolder = "Senha"
-                    }
-                })
+            <input asp-for="@Model.Password" class="form-control mb-3" placeholder="Senha" type="password" required>
         </div>
 
         <div class="form-group">
-            @Html.EditorFor(model => model.ConfirmPassword, new
-                {
-                    htmlAttributes = new
-                    {
-                        @class = "form-control mb-3",
-                        type = "password",
-                        @placeHolder = "Confirme a senha"
-                    }
-                })
+            <input asp-for="@Model.ConfirmPassword" class="form-control mb-3" placeholder="Confirme a senha"
+                type="password" required>
         </div>
 
         <button type="submit" class="register-button">Registrar</button>
-    }
+    </form>
+
+    <p class="mt-3">
+        Já possui uma conta?
+        <a asp-action="Index" asp-controller="Login" class="btn-link">Faça o login aqui!</a>
+    </p>
 </div>
