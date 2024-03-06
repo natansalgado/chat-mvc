@@ -49,6 +49,7 @@ namespace mvc.Controllers
                 string token = _tokenService.GenerateToken(user);
 
                 HttpContext.Session.SetString("UserToken", token);
+                HttpContext.Session.SetString("UserId", user.Id.ToString());
 
                 return RedirectToAction("Index", "Chat");
             }

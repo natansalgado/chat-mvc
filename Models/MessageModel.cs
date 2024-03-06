@@ -7,15 +7,10 @@ namespace mvc.Models
 {
     public class MessageModel
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
         public string Message { get; set; }
-        public string NameColor { get; set; }
-
-        public MessageModel(string name, string message, string nameColor)
-        {
-            Name = name;
-            Message = message;
-            NameColor = nameColor;
-        }
+        public DateTime Date { get; set; }
+        public int UserId { get; set; }
+        public UserModel User { get; set; }
     }
 }

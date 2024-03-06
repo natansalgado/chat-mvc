@@ -1,4 +1,8 @@
 using System.Text;
+using chatmvc.Repositories;
+using chatmvc.Repositories.Interfaces;
+using chatmvc.Services;
+using chatmvc.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,9 +20,11 @@ builder.Services.AddSignalR();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 builder.Services.AddDbContext<ChatContext>(opts => opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using mvc.Dtos;
 using mvc.Models;
-using mvc.Services;
 using mvc.Services.Interfaces;
 
 namespace mvc.Controllers
@@ -49,8 +48,7 @@ namespace mvc.Controllers
             string token = _tokenService.GenerateToken(user);
 
             HttpContext.Session.SetString("UserToken", token);
-
-
+            HttpContext.Session.SetString("UserId", user.Id.ToString());
 
             return RedirectToAction("Index", "Chat");
         }

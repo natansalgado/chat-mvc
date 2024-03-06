@@ -2,21 +2,23 @@
 $(function () {
     var connection = new signalR.HubConnectionBuilder().withUrl("/Chat").build();
 
-    const format = (name, message, nameColor) => {
+    const format = (userName, message) => {
         return `<div class="sep">
-        <p class="name" style="color: ${nameColor};">${name}</p>
+        <p class="name">${userName}</p>
         <p class="message">${message}</p>
         </div>`
     }
 
     connection.on("ChatHistory", function (history) {
         for (var i = 0; i < history.length; i++) {
-            $("#chatArea").append(format(history[i].name, history[i].message, history[i].nameColor));
+            const userName = history[i].user?.userName || "Usuário Desconhecido";
+            const message = history[i].message || "";
+            $("#chatArea").append(format(userName, message));
         }
     });
 
-    connection.on("ReceiveMessage", function (user, message, nameColor) {
-        $("#chatArea").append(format(user, message, nameColor));
+    connection.on("ReceiveMessage", function (user, message) {
+        $("#chatArea").append(format(user, message));
     });
 
     connection.start().catch(function (err) {
@@ -25,15 +27,14 @@ $(function () {
 
     $("#send-button").click(function () {
         var message = $("#message-input").val();
-        var user = $("#username").val();
-        var nameColor = $("#namecolor").val();
+        var userId = Number($("#userId").val());
 
         if (message.length <= 0) return;
 
-        connection.invoke("SendMessage", user, message, nameColor).catch(function (err) {
+        connection.invoke("SendMessage", userId, message).catch(function (err) {
             console.error(err.toString());
         });
-        
+
         $("#message-input").val("")
     });
 });
