@@ -30,7 +30,7 @@ namespace mvc.Hubs
         {
             MessageModel messageModel = _messageService.Create(userId, message);
 
-            await Clients.All.ReceiveMessage(messageModel.User.UserName, message);
+            await Clients.All.ReceiveMessage(messageModel.User, message);
         }
     }
 }

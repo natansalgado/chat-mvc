@@ -8,7 +8,7 @@ namespace mvc.Hubs.Interfaces
 {
     public interface IChatClient
     {
-        Task ReceiveMessage(string userName, string message);
+        Task ReceiveMessage(UserModel user, string message);
         Task ChatHistory(List<MessageModel> history);
     }
 }
