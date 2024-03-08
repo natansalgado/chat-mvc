@@ -1,0 +1,76 @@
+@model mvc.Models.UserModel
+@{
+    ViewBag.Title = "Editar Perfil";
+}
+
+<div id="edit-container">
+    <div id="header">
+        <h4 class="title">Editar Perfil</h4>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <form id="edit-form" asp-action="Edit" asp-controller="Chat" method="post">
+        <img id="avatar-image"
+            src="https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg"
+            alt="Foto de perfil de @Model.UserName" class="img-fluid mb-3">
+
+        <div class="form-group">
+            <label for="avatar-link">URL da Imagem</label>
+            <input type="text" value="@Model.Avatar" class="form-control" id="avatar-link"
+                placeholder="Digite o link da imagem..." asp-for="Avatar">
+            <div id="invalid-link-alert"></div>
+        </div>
+
+        <div class="form-group mt-2">
+            <label for="userName-input">Nome de usuário</label>
+            <input autofocus type="text" class="form-control" id="userName-input"
+                placeholder="Nome de usuário (Deixe vazio caso não queira mudar)" asp-for="UserName">
+        </div>
+
+        <input type="hidden" id="userId" value="@Model.Id" asp-for="Id" />
+
+        <button id="save-button" type="submit" class="btn btn-primary mt-2">Salvar</button>
+        <a asp-action="Index" asp-controller="Chat" class="btn btn btn-danger mt-2">Voltar</a>
+    </form>
+</div>
+
+<script>
+    const placeholderAvatar = "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg";
+
+    function updateImage() {
+        var avatarLink = document.getElementById("avatar-link").value;
+        var avatarImage = document.getElementById("avatar-image");
+        var alertMessage = document.getElementById("invalid-link-alert");
+        var saveButton = document.getElementById("save-button");
+
+        alertMessage.innerHTML = "";
+
+        if (avatarLink.trim() !== "") {
+            var img = new Image();
+
+            img.onload = function () {
+                avatarImage.src = avatarLink;
+                saveButton.classList.remove("disabled");
+            };
+
+            img.onerror = function () {
+                alertMessage.innerHTML = '<div class="alert alert-danger mt-1" role="alert">Link da imagem inválido!</div>';
+                saveButton.classList.add("disabled");
+                avatarImage.src = placeholderAvatar;
+            };
+
+            img.src = avatarLink;
+        } else {
+            saveButton.classList.remove("disabled");
+            avatarImage.src = placeholderAvatar;
+        }
+    }
+
+    document.getElementById("avatar-link").addEventListener("input", updateImage);
+</script>

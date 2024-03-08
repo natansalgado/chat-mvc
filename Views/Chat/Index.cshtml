@@ -1,10 +1,16 @@
+@model mvc.Models.UserModel
 @{
     ViewBag.Title = "Chat";
 }
 
 <div id="chat-container">
-    <div>
-        <a asp-action="Logout" asp-controller="Chat" class="btn btn-danger">Deslogar</a>
+    <div id="header">
+        <h4 class="title">CHAT GERAL</h4>
+
+        <div>
+            <a asp-action="Edit" asp-controller="Chat" class="btn btn-info">Editar</a>
+            <a asp-action="Logout" asp-controller="Chat" class="btn btn-danger">sair</a>
+        </div>
     </div>
 
     <div id="chat-messages">
@@ -12,8 +18,8 @@
     </div>
 
     <form id="inputs">
-        <input type="text" id="message-input" placeholder="Digite sua mensagem..." />
-        <input type="hidden" id="userId" value="@ViewBag.UserId" />
+        <input autofocus type="text" id="message-input" placeholder="Digite sua mensagem..." />
+        <input type="hidden" id="userId" value="@Model.Id" />
         <button id="send-button">Enviar</button>
     </form>
 

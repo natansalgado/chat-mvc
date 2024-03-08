@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using chatmvc.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using mvc.Dtos;
 using mvc.Exceptions;
@@ -44,12 +45,14 @@ namespace mvc.Controllers
 
             try
             {
-                UserModel user = _userService.Create(createUserDto);
+                UserModel userModel = _userService.Create(createUserDto);
 
-                string token = _tokenService.GenerateToken(user);
+                userModel.Password = null;
+
+                string token = _tokenService.GenerateToken(userModel);
 
                 HttpContext.Session.SetString("UserToken", token);
-                HttpContext.Session.SetString("UserId", user.Id.ToString());
+                HttpContext.Session.SetObject("UserModel", userModel);
 
                 return RedirectToAction("Index", "Chat");
             }
