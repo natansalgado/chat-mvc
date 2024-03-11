@@ -41,36 +41,40 @@
 </div>
 
 <script>
-    const placeholderAvatar = "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg";
+    document.addEventListener("DOMContentLoaded", function () {
+        const placeholderAvatar = "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg";
 
-    function updateImage() {
-        var avatarLink = document.getElementById("avatar-link").value;
-        var avatarImage = document.getElementById("avatar-image");
-        var alertMessage = document.getElementById("invalid-link-alert");
-        var saveButton = document.getElementById("save-button");
+        function updateImage() {
+            var avatarLink = document.getElementById("avatar-link").value;
+            var avatarImage = document.getElementById("avatar-image");
+            var alertMessage = document.getElementById("invalid-link-alert");
+            var saveButton = document.getElementById("save-button");
 
-        alertMessage.innerHTML = "";
+            alertMessage.innerHTML = "";
 
-        if (avatarLink.trim() !== "") {
-            var img = new Image();
+            if (avatarLink.trim() !== "") {
+                var img = new Image();
 
-            img.onload = function () {
-                avatarImage.src = avatarLink;
+                img.onload = function () {
+                    avatarImage.src = avatarLink;
+                    saveButton.classList.remove("disabled");
+                };
+
+                img.onerror = function () {
+                    alertMessage.innerHTML = '<div class="alert alert-danger mt-1" role="alert">Link da imagem inválido!</div>';
+                    saveButton.classList.add("disabled");
+                    avatarImage.src = placeholderAvatar;
+                };
+
+                img.src = avatarLink;
+            } else {
                 saveButton.classList.remove("disabled");
-            };
-
-            img.onerror = function () {
-                alertMessage.innerHTML = '<div class="alert alert-danger mt-1" role="alert">Link da imagem inválido!</div>';
-                saveButton.classList.add("disabled");
                 avatarImage.src = placeholderAvatar;
-            };
-
-            img.src = avatarLink;
-        } else {
-            saveButton.classList.remove("disabled");
-            avatarImage.src = placeholderAvatar;
+            }
         }
-    }
 
-    document.getElementById("avatar-link").addEventListener("input", updateImage);
+        updateImage();
+
+        document.getElementById("avatar-link").addEventListener("input", updateImage);
+    });
 </script>

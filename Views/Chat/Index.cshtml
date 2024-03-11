@@ -1,15 +1,28 @@
 @model mvc.Models.UserModel
 @{
     ViewBag.Title = "Chat";
+    ViewBag.PlaceholderAvatar = "https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg";
 }
 
 <div id="chat-container">
     <div id="header">
         <h4 class="title">CHAT GERAL</h4>
+        <div class="btn-group">
 
-        <div>
-            <a asp-action="Edit" asp-controller="Chat" class="btn btn-info">Editar</a>
-            <a asp-action="Logout" asp-controller="Chat" class="btn btn-danger">sair</a>
+            <img id="header-avatar"
+                src="@(!string.IsNullOrEmpty(Model.Avatar) ? Model.Avatar : ViewBag.PlaceholderAvatar)"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                    <a asp-action="Edit" asp-controller="Chat" class="dropdown-item">Perfil</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
+                    <a asp-action="Logout" asp-controller="Chat" class="dropdown-item text-danger">Sair</a>
+                </li>
+            </ul>
         </div>
     </div>
 

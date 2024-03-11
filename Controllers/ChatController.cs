@@ -55,14 +55,16 @@ namespace mvc.Controllers
         [HttpPost]
         public ActionResult Edit(UserModel userModel)
         {
-            UpdateUserDto updateUserDto = new UpdateUserDto();
+            UpdateUserDto updateUserDto = new();
 
             if (userModel.Avatar != null) updateUserDto.Avatar = userModel.Avatar;
             if (userModel.UserName != null) updateUserDto.UserName = userModel.UserName;
 
+            UserModel user = HttpContext.Session.GetObject<UserModel>("UserModel");
+
             try
             {
-                UserModel userUpdated = _service.Update(userModel.Id, updateUserDto);
+                UserModel userUpdated = _service.Update(user.Id, updateUserDto);
 
                 HttpContext.Session.SetObject("UserModel", userUpdated);
 
@@ -72,15 +74,11 @@ namespace mvc.Controllers
             {
                 ViewBag.ErrorMessage = ex.Message;
 
-                UserModel user = HttpContext.Session.GetObject<UserModel>("UserModel");
-
                 return View(user);
             }
             catch (Exception)
             {
                 ViewBag.ErrorMessage = "Erro ao tentar se conectar com o servidor.";
-                
-                UserModel user = HttpContext.Session.GetObject<UserModel>("UserModel");
 
                 return View(user);
             }

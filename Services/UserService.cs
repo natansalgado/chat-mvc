@@ -51,9 +51,10 @@ namespace mvc.Services
 
         public UserModel Update(int id, UpdateUserDto updateUserDto)
         {
-            CheckUserName(updateUserDto.UserName);
+            UserModel userById = GetById(id) ?? throw new ChatException(404, "Usuário não encontrado!");
 
-            UserModel userById = GetById(id);
+            if (updateUserDto.UserName != userById.UserName)
+                CheckUserName(updateUserDto.UserName);
 
             if (updateUserDto.UserName != null) userById.UserName = updateUserDto.UserName;
             if (updateUserDto.Password != null) userById.Password = _passwordHashService.HashPassword(updateUserDto.Password);
